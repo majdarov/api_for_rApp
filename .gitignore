@@ -2,7 +2,7 @@ node_modules
 .vs/
 .vscode/
 webrefApp.bat
-webrefApp.ink
+webrefApp.lnk
 database/test.sql
 test.js
 database/insert_demo.sql
