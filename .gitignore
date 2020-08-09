@@ -1,0 +1,10 @@
+node_modules
+.vs/
+.vscode/
+webrefApp.bat
+database/test.sql
+test.js
+database/insert_demo.sql
+database/tabletposDB
+build
+client

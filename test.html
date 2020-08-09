@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let server = "https://api.evotor.ru/api/v1/inventories/";
+      let token = "6ef2370f-ed79-43b7-8a7c-f7b83175fef2";
+      let store = {
+        uuid: "20180608-EEA0-408D-807D-6AB73272E383",
+        name: "Мой магазин"
+      };
+      let headers = {
+        Accept: "application/vnd.evotor.v2+json",
+        "Content-Type": "application/vnd.evotor.v2+json",
+        "X-Authorization": token
+      };
+      let path = "stores";
+      path += "/" + store.uuid + "/products";
+      fetch(server + path, {
+        headers: headers,
+      })
+        .then(res => res.json())
+        .then(data => console.log(data));
+    </script>
+  </body>
+</html>

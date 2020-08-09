@@ -1,0 +1,15 @@
+.tree span:hover {
+  font-weight: bold;
+  color: blue;
+}
+.tree .selected {
+  background: khaki;
+}
+span {
+  cursor: pointer;
+}
+#calendar {
+  width: 250px;
+  height: 300px;
+  border: 0;
+}
