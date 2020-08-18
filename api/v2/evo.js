@@ -8,6 +8,8 @@ const parseQuery = require('../models/parse_query');
 const { getGroups, postGroup } = require('./groups');
 const { getProducts, postProduct } = require('./products');
 const { getConfig } = require('./config');
+const deleteProducts = require('./products/deleteProducts');
+const putProduct = require('./products/putProduct');
 require('../models/relations');
 
 /* GET home page. */
@@ -61,7 +63,7 @@ router.get('/seq/:destroy?', async (req, res) => {
     console.log(JSON.stringify(group));
     try {
       let response = await fetchEvoAxios({
-        baseURL: 'http://localhost:5000/api/',
+        baseURL: '/api',
         url: '/v2/groups',
         method: 'post',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -92,11 +94,25 @@ router.get('/seq/:destroy?', async (req, res) => {
   }
 });
 
+router.get('/test', (req, res) => {
+  res.send({query: req.query})
+});
+router.post('/test', (req, res) => {
+  res.send({body: req.body, query: req.query})
+});
+router.put('/test', (req, res) => {
+  res.send({body: req.body, query: req.query})
+});
+
 router.get('/config', getConfig);
 
 router.get('/groups/:value?/:gid?', getGroups).post('/groups', postGroup);
 
-router.get('/products/:value?/:pid?', getProducts).post('/products', postProduct);
+router
+  .get('/products/:value?/:pid?', getProducts)
+  .post('/products', postProduct)
+  .put('/products/:id', putProduct)
+  .delete('/products/:id', deleteProducts)
 
 router.get('/documents/:value?', async function (req, res) {
   if (!req.params.value) {

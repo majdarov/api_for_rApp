@@ -4,28 +4,27 @@ const sequelize = new Sequelize({
   storage: './api/db/products.db',
 });
 
-class BarcodeNew extends Model {}
+class Photo extends Model {}
 
-BarcodeNew.init(
+Photo.init(
   {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      // unique: false,
       allowNull: false
     },
-    barcode: {
+    photo: {
       type: DataTypes.STRING,
       primaryKey: true,
-      // unique: true,
       allowNull: false
     },
   },
   {
     sequelize,
-    tableName: 'barcodes_new',
+    tableName: 'photos',
     timestamps: false,
+    version: true
   },
 );
 
-module.exports = BarcodeNew;
+module.exports = Photo;

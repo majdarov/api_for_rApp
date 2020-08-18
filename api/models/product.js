@@ -25,7 +25,7 @@ Product.init(
       //"Н кпр 93.5*3(0,8мм)(250гр.)"
       type: DataTypes.TEXT,
       allowNull: false,
-      defaultValue: 'newTestProduct',
+      defaultValue: 'newTestProduct ' + Date.now(),
     },
     code: {
       //823
@@ -68,7 +68,7 @@ Product.init(
       type: DataTypes.DECIMAL(3, 10),
       defaultValue: 0,
     },
-    photo: DataTypes.TEXT,
+    // photo: DataTypes.TEXT,
     // barcodes: DataTypes.VIRTUAL,
   },
   {
