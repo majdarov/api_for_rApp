@@ -68,7 +68,7 @@ module.exports = async function (req, res) {
       return;
     }
 
-    let barcodes = [];
+    /* let barcodes = [];
     response.items.forEach((item) => {
       if (item.barcodes && item.barcodes.length) {
         item.barcodes.forEach((barcode) => {
@@ -76,14 +76,14 @@ module.exports = async function (req, res) {
         });
       }
     });
-    await Product.sync({ force: true });
-    await Barcode.sync({ force: true });
+    await Product.sync();
+    await Barcode.sync();
     await Product.bulkCreate(response.items);
     await Barcode.bulkCreate(barcodes);
     if (req.params.pid === 'init') {
       await Product.sync({ force: true });
       await Product.bulkCreate(response.items);
-    }
+    } */
     let { count, rows } = await Product.findAndCountAll({
       include: {
         model: Barcode,
