@@ -1,31 +1,48 @@
 const Product = require('../../models/product');
 const Barcode = require('../../models/barcode');
 const Photo = require('../../models/photo');
-const { Op } = require('sequelize');
+const { createRequestAxios, fetchEvoAxios } = require('../api_evotor');
 
 module.exports = async function (req, res) {
+  let errors = [];
+  let errPost;
   try {
-    let barcodes;
-
-    let product = await Product.create(req.body);
+    let request = await createRequestAxios({
+      type: 'post_product_v2',
+      body: req.body,
+    });
+    let response = await fetchEvoAxios(request);
     
-    if (req.body.barcodes && req.body.barcodes.length) {
-      barcodes = await Barcode.bulkCreate(
-        req.body.barcodes.map((item) => {
-          return { id: product.id, barcode: item };
-        }),
-      );
+    if (response.Error) {
+      let err = response.Error.response;
+      errors = [...err.data.violations]
+      errPost = {name: err.data.code, message: err.data.message,errors}
+      throw new Error(err.data.code);
     }
-    if (req.body.photos && req.body.photos.length) {
-      photos = await Photo.bulkCreate(
-        req.body.photos.map((item) => {
-          return { id: product.id, photo: item };
-        }),
-      );
+    
+    if (true) { //Если успешно отправилось в облако!!!
+      let barcodes;
+      let product = await Product.create(response);
+
+      if (response.barcodes && response.barcodes.length) {
+        barcodes = await Barcode.bulkCreate(
+          response.barcodes.map((item) => {
+            return { id: product.id, barcode: item };
+          }),
+        );
+      }
+      if (req.body.photos && req.body.photos.length) {
+        photos = await Photo.bulkCreate(
+          req.body.photos.map((item) => {
+            return { id: product.id, photo: item };
+          }),
+        );
+      }
     }
-    res.send({created: product.id, product});
+    // res.send({ created: product.id, product });
+    res.send({ created: 'test post to Evo', product: { parent_id: 0 } });
   } catch (err) {
-    console.log(err);
-    res.send(err);
+    // console.log(err);
+    res.status(400).send(errPost);
   }
 };

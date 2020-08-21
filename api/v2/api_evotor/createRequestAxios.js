@@ -41,7 +41,7 @@ function selectOption(action) {
       if (action.value) {
         url += '/' + action.value;
         action.value = '';
-      } 
+      }
       return { ...api_v2, method, url };
     /*-------------------------------------*/
 
@@ -75,9 +75,21 @@ function selectOption(action) {
 
     case 'put_product_v2':
       method = 'PUT';
-      url = 'store/' + action.storeUuid + '/products/' + action.body.product.id;
+      url =
+        'stores/' + action.storeUuid + '/products/' + action.body.product.id;
       body = JSON.stringify(action.body);
       return { ...api_v2, method, url, body };
+
+    case 'post_product_v2':
+      method = 'POST';
+      url = 'stores/' + action.storeUuid + '/products';
+      body = JSON.stringify(action.body);
+      return { ...api_v2, method, url, body };
+
+    case 'delete_product_v2':
+      method = 'DELETE';
+      url = 'stores/' + action.storeUuid + '/products/' + action.id;
+      return { ...api_v2, method, url };
 
     case 'put_array_products_v2':
       if (!action.body || !action.body.length) {
@@ -88,14 +100,17 @@ function selectOption(action) {
         ...api_v2.headers,
         'Content-Type': 'application/vnd.evotor.v2+bulk+json',
       };
-      url = 'store/' + action.storeUuid + '/products';
+      url = 'stores/' + action.storeUuid + '/products';
       body = JSON.stringify(action.body);
       return { ...api_v2, method, headers, url, body };
 
     case 'put_array_groups_v2':
       method = 'PUT';
-      headers = {...api_v2.headers, 'Content-Type': 'application/vnd.evotor.v2+bulk+json'};
-      url = 'store/' + action.storeUuid + '/product-groups';
+      headers = {
+        ...api_v2.headers,
+        'Content-Type': 'application/vnd.evotor.v2+bulk+json',
+      };
+      url = 'stores/' + action.storeUuid + '/product-groups';
       body = JSON.stringify(action.body);
       return { ...api_v2, method, headers, url, body };
     default:

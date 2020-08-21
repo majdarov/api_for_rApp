@@ -44,12 +44,6 @@ module.exports = async function (req, res) {
     });
 
     rows.map((p) => {
-      // p.setBarcodes(
-      //   p.Barcodes.map((b) => {
-      //     return b.barcode;
-      //   }),
-      // );
-      // delete p.dataValues.Barcodes;
       setArr(p, 'barcode');
       setArr(p, 'photo');
       return p;
@@ -60,30 +54,30 @@ module.exports = async function (req, res) {
   } else if (req.params.value === 'update') {
     let request = await createRequestAxios({ type: 'products_v2' });
     let response = await fetchEvoAxios(request); // Get Product from Evotor API
-    console.log(response);
+    // console.log(response);
 
     if (req.params.pid === 'from_evo') {
       //Сквозной вывод результата из облака Эвотор
-      res.send(response);
+      res.send(await response.data);
       return;
     }
-
-    /* let barcodes = [];
-    response.items.forEach((item) => {
+    let data = response;
+    let barcodes = [];
+    data.items.forEach((item) => {
       if (item.barcodes && item.barcodes.length) {
         item.barcodes.forEach((barcode) => {
           barcodes.push({ id: item.id, barcode });
         });
       }
     });
-    await Product.sync();
-    await Barcode.sync();
-    await Product.bulkCreate(response.items);
+    await Product.sync({force: true});
+    await Barcode.sync({force: true});
+    await Product.bulkCreate(data.items);
     await Barcode.bulkCreate(barcodes);
-    if (req.params.pid === 'init') {
-      await Product.sync({ force: true });
-      await Product.bulkCreate(response.items);
-    } */
+    // if (req.params.pid === 'init') {
+    //   await Product.sync({ force: true });
+    //   await Product.bulkCreate(response.items);
+    // }
     let { count, rows } = await Product.findAndCountAll({
       include: {
         model: Barcode,
