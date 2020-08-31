@@ -1,0 +1,189 @@
+#form-product {
+  display: inline-block;
+  font-family: 'Font Awesome 5 Free';
+  width: 70vw;
+  border: 1px solid lightseagreen;
+  background-color: cornsilk;
+  vertical-align: middle;
+}
+
+#uuid {
+  border: none;
+  padding-left: 5px;
+  font-weight: bold;
+  width: 20vw;
+}
+
+.barcodes {
+  display: inline-block;
+  border: 1px solid lightskyblue;
+  padding: 5px;
+  background-color: initial;
+  width: 10em;
+}
+
+[name='Product'] {
+  display: flex;
+  flex-direction: column;
+}
+
+[name='img_barcodes'] {
+  display: inline-flex;
+}
+
+/* input[type='text'] {
+  width: 30vw;
+  margin-left: 5px;
+} */
+
+input[name='code'],
+input[name='measure_name'] {
+  width: 5em;
+  text-align: right;
+  border: none;
+  background-color: initial;
+}
+
+input[name='price'], 
+input[name='cost_price'],
+input[name='article'],
+#group {
+  width: 10em;
+  text-align: right;
+  margin: 2px;
+  /* border: none; */
+  background-color: initial;
+}
+
+ 
+.price + span::before {
+  content: "\f158";
+  font-weight: 900;
+  margin-right: 0.3rem;
+  font-family: "Font Awesome 5 Free";
+}
+
+.barcodes input {
+  width: inherit;
+}
+
+input[name='description'] {
+  text-align: right;
+  border: none;
+  background-color: initial;
+}
+
+[name='name'] {
+  border: 1px solid blue;
+  height: fit-content;
+}
+
+label {
+  font-weight: bold;
+  border: 1px blueviolet dashed;
+  padding: 3px;
+  color: indigo;
+}
+
+label:hover {
+  border: 1px lawngreen double;
+}
+
+.picture-small {
+  width: 64px;
+  cursor: pointer;
+}
+
+.div-picture {
+  display: inline-block;
+}
+
+.div-picture:hover > span::before {
+  content: '\f2ed';
+  font-weight: 900;
+  color: tomato;
+}
+
+.select::after {
+  content: "\f00d";
+  font-weight: bolder;
+  margin-right: 0.3rem;
+}
+
+input,
+textarea,
+select,
+button
+ {
+  color: darkblue;
+}
+
+.buttons {
+  display: flex;
+  justify-content: right;
+}
+
+*:disabled {
+  color: coral;
+}
+
+.big-img + span::before{
+  content: '\f00d';
+  font-weight: 900;
+  color: tomato;
+}
+
+.view-barcode {
+  font-size: 4rem;
+  font-family: 'Code EAN13';
+}
+.view-barcode ul > li {
+  display: inline;
+}
+.view-barcode li .del-bc::before {
+  content: '\f2ed';
+  font-size: 1.5rem;
+  opacity: 0;
+}
+.view-barcode li:hover .del-bc::before {
+  display: inline-block;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 1.5rem;
+  content: '\f2ed';
+  font-weight: 900;
+  color: tomato;
+  opacity: 70%;
+  transition: ease-in-out 0.5s 0.5s;
+}
+.view-barcode .add-bc::before {
+  content: 'add \f02a';
+  font-size: 1.5rem;
+  opacity: 0;
+}
+.view-barcode input:focus + .add-bc::before {
+  display: inline-block;
+  font-family: 'Font Awesome 5 Free';
+  font-size: 1.5rem;
+  content: '\f02a';
+  font-weight: 900;
+  color: green;
+  opacity: 70%;
+  transition: ease-in-out 0.5s 0.5s;
+}
+
+.menu-buttons {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;  
+  font-size: large;
+  opacity: 70%;
+}
+.menu-buttons span::before {
+  color: tomato;
+}
+
+.required {
+  border: red 1px solid;
+}

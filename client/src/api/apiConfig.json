@@ -1,0 +1,12 @@
+{
+  "apiSamurai": {
+    "baseURL": "https://social-network.samuraijs.com/api/1.0/",
+    "withCredentials": true,
+    "headers": {
+      "API-KEY": "1204f868-84dd-4ccb-ad64-0310201501d1"
+    }
+  },
+  "apiProducts": {
+    "baseURL": "/api/v2"
+  }
+}

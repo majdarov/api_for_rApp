@@ -1,0 +1,25 @@
+nav {
+    padding: 0.5rem;
+    grid-area: n;
+    background-color: inherit;
+}
+
+.item {
+    margin-bottom: 3px;
+    /* border-radius: 5px; */
+    padding: 3px;
+    background-color: lavender;
+    /* box-shadow: 2px 2px 1px darkslategrey; */
+    text-align: center;
+}
+
+.item a {
+    color: tomato;
+    overflow: hidden;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.item a.active {
+    color: white;
+}

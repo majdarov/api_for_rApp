@@ -1,0 +1,20 @@
+#%RAML 1.0
+title: API for Commodity
+baseUri: http://localhost:3001/api/{version}
+version: v2
+/products:
+    get:
+        description: Get products
+        queryParameters:
+            parent_id:
+                description: Get products with parent_id
+                displayName: parent_id
+                type: string
+                example: 9349aaca-79a1-4e51-bca1-8b633d73f18d
+                required: false
+    post:
+        description: Post Product
+    /{productId}: 
+        get:
+        put:
+        delete:

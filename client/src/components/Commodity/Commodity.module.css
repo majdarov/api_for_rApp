@@ -1,0 +1,80 @@
+.container {
+  display: grid;
+  grid-template-columns: 2fr 4fr;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.list {
+  /* grid-column: 2/7; */
+  padding-top: 0.5rem;
+  padding-left: 0.2rem;
+  border: 1px solid blue;
+  background-color: cornsilk;
+  cursor: default;
+  overflow: auto;
+}
+
+.list ul {
+  margin-right: 0.5rem;
+}
+
+.list h3 {
+  text-align: center;
+  border-bottom: grey solid 2px;
+}
+
+.list h3::before {
+  content: '\f50d';
+  font-weight: 400;
+  color: navy;
+  font-family: 'Font Awesome 5 Brands';
+  margin-right: 1rem;
+}
+
+.list h3::after {
+  content: '\f50d';
+  font-weight: 400;
+  color: navy;
+  font-family: 'Font Awesome 5 Brands';
+  margin-left: 1rem;
+}
+
+.list li {
+  padding-top: 0.2rem;
+  padding-left: 0.2rem;
+  border-bottom: grey solid 1px;
+  cursor: pointer;
+  /* font-family: "Font Awesome 5 Free"; */
+}
+
+.list li:nth-child(2n) {
+  background-color: lightgray;
+}
+
+.list li:hover {
+  background-color: lavender;
+}
+
+.selected {
+  background-color: lavender;
+}
+
+.buttons {
+  padding: 3px;
+}
+
+.del {
+  margin-left: 5px;
+}
+
+.list li:hover > span::before {
+  content: '\f2ed';
+  font-weight: 900;
+  color: tomato;
+  margin-left: 1rem;
+}
+
+.head {
+  position: sticky;
+  top: 0;
+}

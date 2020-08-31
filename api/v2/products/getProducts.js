@@ -3,6 +3,7 @@ const Product = require('../../models/product');
 const { createRequestAxios, fetchEvoAxios } = require('../api_evotor');
 const Barcode = require('../../models/barcode');
 const Photo = require('../../models/photo');
+const { Op } = require('sequelize');
 
 const setArr = (product, name) => {
   let arr = name.split('');
@@ -15,8 +16,6 @@ const setArr = (product, name) => {
   );
   delete product.dataValues[arr.join('') + 's'];
 };
-
-// {Photos:['photos', 'photo']}
 
 module.exports = async function (req, res) {
   if (!req.params.value) {
@@ -103,7 +102,11 @@ module.exports = async function (req, res) {
     }
     let whereP; // Generate Query string
     if (+req.params.pid === 0 || req.params.pid === 'null') {
-      whereP = { barcode: { [Op.is]: null } };
+      whereP = { barcode:
+        {
+          [Op.is]: null
+        }
+      };
     } else {
       whereP = { barcode: req.params.pid };
     }
@@ -136,13 +139,6 @@ module.exports = async function (req, res) {
       res.json({ error: 'Primary key not found!' });
       return;
     }
-
-    // product.setBarcodes(
-    //   product.Barcodes.map((b) => {
-    //     return b.barcode;
-    //   }),
-    // );
-    // delete product.dataValues.Barcodes;
 
     setArr(product, 'barcode');
     setArr(product, 'photo');

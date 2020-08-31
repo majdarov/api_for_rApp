@@ -22,7 +22,7 @@ module.exports = async function (req, res) {
     
     if (true) { //Если успешно отправилось в облако!!!
       let barcodes;
-      let product = await Product.create(response);
+      var product = await Product.create(response);
 
       if (response.barcodes && response.barcodes.length) {
         barcodes = await Barcode.bulkCreate(
@@ -39,8 +39,7 @@ module.exports = async function (req, res) {
         );
       }
     }
-    // res.send({ created: product.id, product });
-    res.send({ created: 'test post to Evo', product: { parent_id: 0 } });
+    res.send({ created: product.id, product });
   } catch (err) {
     // console.log(err);
     res.status(400).send(errPost);

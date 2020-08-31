@@ -1,0 +1,68 @@
+.tree {
+  /* grid-column: 1/2; */
+  padding: 0.5rem;
+  border: 1px solid blue;
+  background-color: cornsilk;
+  cursor: default;
+}
+
+.tree i {
+  color: coral;
+  margin-right: 5px;
+}
+
+.tree span:hover {
+  background-color: lavender;
+  /* font-family: "Font Awesome 5 Free"; */
+}
+
+.tree li {
+    white-space: nowrap;
+}
+
+.tree li::before {
+  content: "\f105";
+  /* font-family: "Font Awesome 5 Free"; */
+  font-weight: 900;
+  margin-right: 0.3rem;
+}
+
+.tree li[class="open"]::before {
+  content: "\f107";
+  /* font-family: "Font Awesome 5 Free"; */
+  font-weight: 900;
+}
+
+.tree li[class="open"] > ul:hover {
+  border-left: solid 1px rgb(160, 158, 158);
+}
+
+.tree span:active {
+  background-color: lavender;
+}
+
+ul {
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.tree h3 {
+  text-align: center;
+  border-bottom: grey solid 2px;
+}
+
+.tree h3::before {
+  content: "\f50c";
+  font-family: "Font Awesome 5 Brands";
+  font-weight: 400;
+  color: blue;
+  margin-right: 1rem;
+}
+
+.tree h3::after {
+    content: "\f50c";
+    font-family: "Font Awesome 5 Brands";
+    font-weight: 400;
+    color: blue;
+    margin-left: 1rem;
+  }

@@ -7,7 +7,7 @@ module.exports = async function (req, res) {
       let where = parseQuery(req.query);
       let { count, rows } = await Group.findAndCountAll({
         where,
-        order: [['createdAt', 'ASC']]
+        // order: [['createdAt', 'ASC']]
       });
       let groups = {count, items: rows, query: req.query};
       res.json(groups);

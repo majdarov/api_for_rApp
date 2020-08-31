@@ -1,0 +1,42 @@
+header img {
+  vertical-align: middle;
+  margin: 0.5rem 1rem;
+  width: 2rem;
+}
+header h2 {
+  display: inline;
+}
+
+header {
+  grid-area: h;
+  background-color: darkorange;
+  position: sticky;
+  top: 0;
+}
+
+.needupdate {
+  display: inline;
+  color: red;
+  font-weight: bold;
+}
+
+.updated {
+  display: inline;
+  color: green;
+  font-weight: bold;
+}
+
+.needupdate:hover {
+  cursor: pointer;
+}
+
+.loginBlock {
+  font-weight: 600;
+  font-size: 1em;
+  float: right;
+  margin-right: 10px;
+}
+
+.loginBlock::before {
+  content: url('/images/icons/people.svg');
+}

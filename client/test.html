@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let a = {
+          name: "Vasja",
+          items: [5, 6, 7],
+          teacher: {
+              name: "Ivan Vasiljevich"
+          }
+      };
+      let b = Object.assign({}, a, {
+          teacher: {
+              name: "Petr Timofeevich"
+          }
+      })
+      b.name = "Petya";
+      b.items = [...a.items];
+      b.items.push(10);
+    //   b.teacher = {...a.teacher};
+    //   b.teacher.name = "Petr Timofeevich";
+      console.log(a);
+      console.log(b);
+
+    </script>
+  </body>
+</html>
