@@ -13,8 +13,6 @@ const v2 = require('../api/v2/evo');
 // var cors = require('cors');
 const Config = require('../api/models/config');
 
-// router.options('*', cors());
-
 router.get('/', (req, res) => {
   res.redirect('/api/docs');
 });
@@ -59,7 +57,6 @@ router.get('/config/:update?/:storeId?', async function (req, res) {
     res.json(config);
   }
 });
-// router.use('/v1', /* cors(), */ v1);
-router.use('/v2',/*  cors(), */ v2);
+router.use('/v2',v2);
 
 module.exports = router;
