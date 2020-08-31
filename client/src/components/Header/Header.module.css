@@ -38,5 +38,9 @@ header {
 }
 
 .loginBlock::before {
-  content: url('/images/icons/people.svg');
+  content: '\f007';
+  font-weight: 400;
+  color: navy;
+  font-family: 'Font Awesome 5 Free';
+  margin-right: 1rem;
 }
