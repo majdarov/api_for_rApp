@@ -1,7 +1,7 @@
 #form-product {
   display: inline-block;
   font-family: 'Font Awesome 5 Free';
-  width: 70vw;
+  width: 50vw;
   border: 1px solid lightseagreen;
   background-color: cornsilk;
   vertical-align: middle;
@@ -44,7 +44,7 @@ input[name='measure_name'] {
   background-color: initial;
 }
 
-input[name='price'], 
+input[name='price'],
 input[name='cost_price'],
 input[name='article'],
 #group {
@@ -55,7 +55,7 @@ input[name='article'],
   background-color: initial;
 }
 
- 
+
 .price + span::before {
   content: "\f158";
   font-weight: 900;
@@ -75,7 +75,7 @@ input[name='description'] {
 
 [name='name'] {
   border: 1px solid blue;
-  height: fit-content;
+  /* height: fit-content; */
 }
 
 label {
@@ -176,7 +176,7 @@ button
   display: flex;
   justify-content: flex-end;
   padding: 0;
-  margin: 0;  
+  margin: 0;
   font-size: large;
   opacity: 70%;
 }

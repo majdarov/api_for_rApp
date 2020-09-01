@@ -3,6 +3,7 @@ import s from './Form.module.css';
 import { useState } from "react";
 import Preloader from '../../common/Preloader/Preloader';
 import { ComponentsProducts } from './schemas/ComponentsProducts';
+import TextArea from '../../common/TextArea/TextArea';
 import { setNewCode, newBarcode, validateBarcode, validateZeroData, validateRequiredData } from './frmUtilites';
 import FormImg from './FormImg';
 import FormModalWrapper from './FormModalWrapper';
@@ -17,16 +18,13 @@ const FormProduct = props => {
     ...props.formData,
     allow_edit: isNewData,
     parent_id: parentId,
-    photos: [...props.formData.photos],
-    barcodes: [...props.formData.barcodes],
+    // photos: [...props.formData.photos],
+    // barcodes: [...props.formData.barcodes],
     isNewData,
     bigImg: null,
     currentBarcode: ''
   });
 
-  if (!state.code) {
-    setNewCode().then(code => setState({ ...state, code }));
-  }
 
   if (props.formError) {
     let err = props.formError;
@@ -35,6 +33,17 @@ const FormProduct = props => {
   }
 
   const disabled = !isNewData && !state.allow_edit;
+
+  const formChanged = () => {
+    let changes = [];
+    for (let key in  props.formData) {
+      if (state[key] !==  props.formData[key]) {
+        changes.push({[key]: state[key]});
+      }
+    }
+    // console.log(changes);
+    return changes.length;
+  }
 
   const formatPrice = price => {
     return isFinite(price) ? Number(price).toFixed(2) : '0.00';
@@ -104,7 +113,10 @@ const FormProduct = props => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    if (state.allow_edit && window.confirm('Save changes')) {
+    if (state.allow_edit && formChanged() && window.confirm('Save changes')) {
+      if (!state.code) {
+        setNewCode().then(code => setState({ ...state, code }));
+      }
       let body = { ...state };
       if (body.parent_id === '0') {
         delete body.parent_id;
@@ -145,6 +157,7 @@ const FormProduct = props => {
       props.postFormData('product', typeQuery, body);
       props.toggleFormPost(true);
     } else {
+      props.setFormData();
       props.setViewForm(false);
     }
     document.body.style.overflow = 'auto';
@@ -196,7 +209,6 @@ const FormProduct = props => {
 
   const pProps = { id: s.picture, className: s['picture-small'], divPicture: s['div-picture'], pictureClick };
 
-  // let photo = state.photo ? state.photo : 'image3D.png';
   if (props.formPost) {
     return <Preloader />
   } else {
