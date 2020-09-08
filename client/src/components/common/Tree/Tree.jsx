@@ -8,6 +8,42 @@ const Tree = props => {
   let tree = { id: "Tree", label: props.treeLabel, childs: [nodeRoot] };
   createTree(props.data, tree);
 
+  function handleClick(e) {
+    if (e.target.tagName !== "SPAN" && e.target.tagName !== "I") return;
+    // ***SPAN toggle selected
+    document
+      .getElementById("Tree")
+      .querySelectorAll("span")
+      .forEach(item => {
+        if (item.className === s.selected) item.className = null;
+      });
+    if (e.target.tagName === "SPAN") {
+      e.target.className = s.selected;
+    } else {
+      e.target.nextSibling.className = s.selected;
+    }
+    // SPAN***
+    let elem = e.target.closest("li");
+    if (!elem) return;
+    if (elem.id !== "0") {
+      let target = elem.querySelector("ul");
+      if (target) {
+        target.hidden = !target.hidden;
+        if (target.hidden) {
+          elem.className = "closed";
+          elem.firstElementChild.className = "fas fa-folder";
+        } else {
+          elem.className = "open";
+          elem.firstElementChild.className = "fas fa-folder-open";
+        }
+      }
+    }
+
+    if (props.callback) {
+      props.callback(elem.id);
+    }
+  }
+
   function createSubTree(item, lvl = 0) {
     let hidden;
     lvl += 1;
@@ -32,7 +68,7 @@ const Tree = props => {
   let treeElements = createSubTree(nodeRoot);
 
   return (
-    <div id={tree.id} className={s.tree} onClick={(e) => props.handleClick(e)}>
+    <div id={tree.id} className={s.tree} onClick={/* (e) => props.handleClick(e) */ handleClick}>
       <h3>{tree.label}</h3>
       <ul>{treeElements}</ul>
     </div>

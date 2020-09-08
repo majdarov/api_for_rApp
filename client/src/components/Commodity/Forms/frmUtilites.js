@@ -7,7 +7,7 @@ export const setNewCode = async () => {
 };
 
 export function newBarcode(code, prefix = '0000') {
-  if (!prefix) prefix = '0000';
+  // if (!prefix) prefix = '0000';
   let A1 =
     '20'.concat(prefix) +
     '0'.repeat(6 - code.toString().length) +

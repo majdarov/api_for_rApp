@@ -7,6 +7,7 @@ import FormModalWrapper from "./Forms/FormModalWrapper";
 import FormProduct from "./Forms/FormProduct";
 
 const Commodity = props => {
+
   if (!props.isLoaded) {
     props.setPid(0);
     props.getGroups();
@@ -20,7 +21,7 @@ const Commodity = props => {
     props.setError(null);
   }
 
-  function handleClick(e) {
+  /* function handleClick(e) {
     if (e.target.tagName !== "SPAN" && e.target.tagName !== "I") return;
     // ***SPAN toggle selected
     document
@@ -53,10 +54,15 @@ const Commodity = props => {
 
     if (props.pid === elem.id) return;
     props.setPid(elem.id);
-  }
+  } */
 
   function newData() {
     props.getProductId('');
+  }
+
+  const changePid = eId => {
+    if (props.pid === eId) return;
+    props.setPid(eId);
   }
 
   if (props.error) {
@@ -91,7 +97,7 @@ const Commodity = props => {
           />
           : null}
         <div className={s.container}>
-            <Tree data={props.groups} price="Price" treeLabel="Groups" handleClick={handleClick} />
+            <Tree data={props.groups} price="Price" treeLabel="Groups" /* handleClick={handleClick} */ callback={changePid} />
           <div className={s.list}>
             <h3>Commodities</h3>
             <ListCommodities

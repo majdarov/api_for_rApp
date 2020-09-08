@@ -191,12 +191,13 @@ export const getGroups = () => {
   };
 };
 
-export const updateProducts = () => {
+export const updateProducts = (pId) => {
   return (dispatch) => {
     productsApi.getData('products/update').then((res) => {
       dispatch(updateCommodityAC());
       dispatch(setUpdatedAC(false));
       alert(`Updated at ${Date()}`);
+      dispatch(setPidAC(pId || 0));
     });
   };
 };

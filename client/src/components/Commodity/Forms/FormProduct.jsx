@@ -8,6 +8,7 @@ import { setNewCode, newBarcode, validateBarcode, validateZeroData, validateRequ
 import FormImg from './FormImg';
 import FormModalWrapper from './FormModalWrapper';
 import noPhoto from '../../../Assets/img/terminal-5.png';
+import Tree from '../../common/Tree/Tree';
 
 const FormProduct = props => {
 
@@ -22,9 +23,14 @@ const FormProduct = props => {
     // barcodes: [...props.formData.barcodes],
     isNewData,
     bigImg: null,
-    currentBarcode: ''
+    currentBarcode: '',
+    // treeView: false
   });
 
+
+  if (!state.code) {
+    setNewCode().then(code => setState({ ...state, code }));
+  }
 
   if (props.formError) {
     let err = props.formError;
@@ -36,12 +42,13 @@ const FormProduct = props => {
 
   const formChanged = () => {
     let changes = [];
-    for (let key in  props.formData) {
-      if (state[key] !==  props.formData[key]) {
-        changes.push({[key]: state[key]});
+    for (let key in props.formData) {
+      if (state[key] !== props.formData[key]) {
+        changes.push({ [key]: state[key] });
       }
     }
     // console.log(changes);
+    if (changes.length === 1 && changes[0].code) changes = [];
     return changes.length;
   }
 
@@ -58,26 +65,28 @@ const FormProduct = props => {
     elem.classList.remove(s.required);
 
     if (name === 'barcodes') {
+      if (state.barcodes.includes(value)) {
+        alert(`Barcode ${value} is exist in this product!`);
+        return;
+      }
       setState({ ...state, currentBarcode: value });
       return;
-    }
-
-    if (name === 'picture') {
+    } else if (name === 'picture') {
       let photos = state.photos;
       Array.from(fileInput.current.files).forEach(item => {
         photos.push(item.name);
       })
       setState({ ...state, photos });
       return;
-    }
-    if (name === 'allow_edit') {
+    } else if (name === 'allow_edit') {
       let form = document.getElementById(s['form-product']);
       Object.values(form.elements).forEach(item => {
         if (item.disabled && item.id !== s.uuid) item.removeAttribute('disabled');
       })
       form.allow_edit.parentNode.remove();
+    } else {
+      setState({ ...state, [name]: value });
     }
-    setState({ ...state, [name]: value });
   }
 
   const handleBlur = ev => {
@@ -89,9 +98,14 @@ const FormProduct = props => {
       if (!value) {
         let prefix = window.prompt(`Введите префикс!\r\n
           Рекомендуется последние 4 цифры ИНН.\r\n
-          По умолчанию -> '0000'`, '2922');
-        if (!prefix || !isFinite(prefix)) prefix = '0000';
+          По умолчанию -> '0000'`, '7321');
+        // if (!prefix || !isFinite(prefix)) prefix = '0000';
         newValue = newBarcode(state.code, prefix);
+        if (state.barcodes.includes(newValue)) {
+          console.warn(`Barcode ${newValue} is Exist!`)
+          return;
+        }
+
       }
       let valBc = validateBarcode(value || newValue);
       if (valBc !== 0) {
@@ -100,6 +114,7 @@ const FormProduct = props => {
       }
       let barcodes = [...state.barcodes, state.currentBarcode || newValue];
       setState({ ...state, barcodes });
+      ev.target.value = '';
       return;
     }
 
@@ -114,11 +129,9 @@ const FormProduct = props => {
     ev.preventDefault();
     ev.stopPropagation();
     if (state.allow_edit && formChanged() && window.confirm('Save changes')) {
-      if (!state.code) {
-        setNewCode().then(code => setState({ ...state, code }));
-      }
+
       let body = { ...state };
-      if (body.parent_id === '0') {
+      if (body.parent_id === '0' || body.parent_id === 0) {
         delete body.parent_id;
       }
       delete body.createdAt;
@@ -126,6 +139,7 @@ const FormProduct = props => {
       delete body.allow_edit;
       delete body.bigImg;
       delete body.currentBarcode;
+      delete body.treeView;
 
       let missData = validateRequiredData(body);
       if (missData.length) {
@@ -197,9 +211,37 @@ const FormProduct = props => {
     setState({ ...state, [arrName]: arr });
   }
 
-  const gProps = { groups: props.groups, disabled, handleChange, parent_id: state.parent_id, id: s.group };
+  const [pId, setPid] = useState(parentId);
+
+  const [treeView, setTreeView] = useState(false);
+
+  const callbackTree = (eId) => {
+    let parent_id = eId ? eId : 0;
+    setPid(parent_id);
+  }
+
+  const clickGroups = () => {
+    setTreeView(!treeView);
+  }
+
+  const onBlurGroup = () => {
+    setState({ ...state, parent_id: pId });
+  }
+
+  const closeTree = e => {
+    if (e.target.tagName !== 'I') return;
+    setState({ ...state, parent_id: pId });
+    setTreeView(false);
+  }
+
+  const gProps = {
+    groups: props.groups, disabled, parent_id: pId, onClick: clickGroups, onBlurGroup,
+    treeView, classDiv: s['g-tree'], classTree: s.tree, callbackTree, closeTree
+  };
 
   const mnProps = { disabled, handleChange, id: s.measure_name, measure_name: state.measure_name };
+  const tProps = { disabled, handleChange, id: s.type, type: state.type };
+  const taxProps = { disabled, handleChange, id: s.tax, tax: state.tax };
 
   const bProps = {
     barcodes: state.barcodes, bc: state.currentBarcode, addBc: s['add-bc'], delBc: s['del-bc'],
@@ -256,13 +298,17 @@ const FormProduct = props => {
               <input type="text" name="code" value={state.code} onChange={handleChange} disabled={disabled} />
               <label>Aticle:</label>
               <input type="text" name='article_number' value={state.article_number || ''}
-                  onChange={handleChange} disabled={disabled} />
-              <ComponentsProducts.Groups {...gProps} />
-              <ComponentsProducts.MeasureNames {...mnProps} />
+                onChange={handleChange} disabled={disabled} />
             </div>
+            <div className={s.propertyes}>
+              <ComponentsProducts.MeasureNames {...mnProps} />
+              <ComponentsProducts.Types {...tProps} />
+              <ComponentsProducts.Taxes {...taxProps} />
+            </div>
+            <ComponentsProducts.GroupsTree {...gProps} />
             <label>
               Name:
-              <textarea type="text" name="name" value={state.name} onChange={handleChange} disabled={disabled} />
+              <TextArea name="name" value={state.name} placeholder='Input name ...' onChange={handleChange} disabled={disabled} />
             </label>
             <label>Description:
               <input type="text" name="description" value={state.description || ''} onChange={handleChange} disabled={disabled} />
@@ -270,10 +316,10 @@ const FormProduct = props => {
             <div className={s.prices}>
               <label htmlFor='price'>Price:</label>
               <input name="price" defaultValue={formatPrice(state.price)} className={s.price}
-                  onBlur={handleBlur} onChange={handleChange} disabled={disabled} /><span></span>
+                onBlur={handleBlur} onChange={handleChange} disabled={disabled} /><span></span>
               <label htmlFor='cost_price'>Cost Price:</label>
               <input name="cost_price" defaultValue={formatPrice(state.cost_price)} className={s.price}
-                  onBlur={handleBlur} disabled={disabled} /><span></span>
+                onBlur={handleBlur} disabled={disabled} /><span></span>
               <label>Allow to sell:</label>
               <input type="checkbox" name="allow_to_sell" defaultChecked={state.allow_to_sell} disabled={disabled} />
             </div>

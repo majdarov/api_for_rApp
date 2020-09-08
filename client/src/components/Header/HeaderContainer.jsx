@@ -25,7 +25,7 @@ const HeaderContainer = props => {
 
     const authMe = props.authMe;
     useEffect(() => authMe(), [authMe]);
-    
+
     const getTitle = props.getTitle;
     useEffect(() => {
         getTitle(path);
@@ -64,6 +64,7 @@ const mapStateToProps = state => {
         className,
         lastUpdate,
         isUpdated: state.commodityPage.isUpdated,
+        pId: state.commodityPage.pid,
         currentLang: state.navigation.currentLang
     }
 }

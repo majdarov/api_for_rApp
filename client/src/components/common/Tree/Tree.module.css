@@ -51,7 +51,7 @@ ul {
   border-bottom: grey solid 2px;
 }
 
-.tree h3::before {
+/* .tree h3::before {
   content: "\f50c";
   font-family: "Font Awesome 5 Brands";
   font-weight: 400;
@@ -65,4 +65,8 @@ ul {
     font-weight: 400;
     color: blue;
     margin-left: 1rem;
+  } */
+
+  .selected {
+    background-color: lavender;
   }

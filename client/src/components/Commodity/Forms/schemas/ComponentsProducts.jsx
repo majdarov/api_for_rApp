@@ -1,6 +1,7 @@
 import React from 'react';
 import schema from './products.json';
 import { viewBarcode } from '../frmUtilites';
+import Tree from '../../../common/Tree/Tree';
 
 export const ComponentsProducts = {
     MeasureNames: props => {
@@ -15,6 +16,42 @@ export const ComponentsProducts = {
                     {
                         schema.measure_names.map((m, i) => {
                             return <option key={i} value={m}>{m}</option>
+                        })
+                    }
+                </select>
+            </label>
+        )
+    },
+    Types: props => {
+        return (
+            <label>
+                Type
+                <select name="type"
+                    id={props.id}
+                    value={props.type}
+                    onChange={props.handleChange}
+                    disabled={props.disabled}>
+                    {
+                        schema.types.map((t, i) => {
+                            return <option key={i} value={t.type}>{t.description}</option>
+                        })
+                    }
+                </select>
+            </label>
+        )
+    },
+    Taxes: props => {
+        return (
+            <label>
+                Tax
+                <select name="tax"
+                    id={props.id}
+                    value={props.tax}
+                    onChange={props.handleChange}
+                    disabled={props.disabled}>
+                    {
+                        schema.taxes.map((t, i) => {
+                            return <option key={i} value={t.tax}>{t.description}</option>
                         })
                     }
                 </select>
@@ -38,6 +75,32 @@ export const ComponentsProducts = {
                     })}
                 </select>
             </label>
+        )
+    },
+    GroupsTree: props => {
+        // gProps = { groups: props.groups, disabled, handleChange, parent_id: state.parent_id, id: s.group }
+        let groups = props.groups;
+        let g = groups.find(item => item.id === props.parent_id);
+        let gLabel = g ? g.label : 'Root';
+        let onDivClick = props.disabled ? null : props.onClick;
+
+
+
+        return (
+            <>
+                {props.treeView &&
+                    <div className={props.classTree} onClick={props.closeTree}>
+                        <Tree data={props.groups} price="Price" treeLabel="Groups" callback={props.callbackTree} />
+                        <i className='fas fa-angle-down'></i>
+                    </div>
+                }
+                <div className={props.classDiv} onClick={onDivClick} tabIndex={-1} onBlur={props.onBlurGroup}>
+                    <div name='parent_id'>
+                        {gLabel}
+                        <i className='fa fa-angle-down'></i>
+                    </div>
+                </div >
+            </>
         )
     },
     Barcodes: props => {

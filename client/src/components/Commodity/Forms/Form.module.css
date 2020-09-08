@@ -36,8 +36,7 @@
   margin-left: 5px;
 } */
 
-input[name='code'],
-input[name='measure_name'] {
+input[name='code'] {
   width: 5em;
   text-align: right;
   border: none;
@@ -46,8 +45,8 @@ input[name='measure_name'] {
 
 input[name='price'],
 input[name='cost_price'],
-input[name='article'],
-#group {
+input[name='article']
+{
   width: 10em;
   text-align: right;
   margin: 2px;
@@ -55,6 +54,28 @@ input[name='article'],
   background-color: initial;
 }
 
+.g-tree {
+  border: solid 1px;
+}
+
+.g-tree > input {
+  border: none;
+}
+
+.tree {
+  position: fixed;
+  display: block;
+  top: 0;
+  text-align: start;
+  border: solid 1px blueviolet;
+  background-color: white;
+  transition: ease-in-out top 0.5s 0.5s;
+}
+
+.tree > i {
+  text-align: center;
+  font-size: 1.5rem;
+}
 
 .price + span::before {
   content: "\f158";
@@ -75,7 +96,8 @@ input[name='description'] {
 
 [name='name'] {
   border: 1px solid blue;
-  /* height: fit-content; */
+  height: 2rem;
+  width: 45vw;
 }
 
 label {
@@ -186,4 +208,10 @@ button
 
 .required {
   border: red 1px solid;
+}
+
+.propertyes {
+  display: inline-grid;
+  justify-items: left;
+  border: gray dashed 1px;
 }

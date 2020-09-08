@@ -9,7 +9,7 @@ const Header = (props) => {
     function clickUpdate() {
         if (props.update) {
             props.setUpdated(true);
-            props.updateProducts();
+            props.updateProducts(props.pId);
         }
     }
 

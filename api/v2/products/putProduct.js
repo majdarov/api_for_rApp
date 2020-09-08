@@ -2,6 +2,7 @@ const Product = require('../../models/product');
 const Barcode = require('../../models/barcode');
 const Photo = require('../../models/photo');
 const { Op } = require('sequelize');
+const { createRequestAxios, fetchEvoAxios } = require('../api_evotor');
 
 async function prepareArray(arr, id, instance) {
   let keys = instance.primaryKeyAttributes;
@@ -54,7 +55,29 @@ function arrCompare(arrSource = [], arrNew = []) {
 }
 
 module.exports = async function (req, res) {
-  try {
+  let errors = [];
+  let errPost;
+  try { //put new data to Evo
+    let request = await createRequestAxios({
+      type: 'put_product_v2',
+      body: req.body,
+    });
+    let response = await fetchEvoAxios(request);
+
+    if (response.Error) {
+      let err = response.Error.response;
+      errors = [...err.data.violations]
+      errPost = {name: err.data.code, message: err.data.message,errors}
+      throw new Error(err.data.code);
+    }
+
+  } catch (err) {
+    // console.log(err);
+    res.status(400).send(errPost);
+    return;
+  }
+
+  try { //update local db
     let product = await Product.findByPk(req.params.id);
     let barcodes;
     let photos;
@@ -69,13 +92,14 @@ module.exports = async function (req, res) {
       if (req.body.barcodes) {
         barcodes = Array.from(req.body.barcodes);
         var outBc = await prepareArray(barcodes, req.params.id, Barcode);
-        
+
       }
       /* Add new Photos or|and delete old photos*/
       if (req.body.photos) {
         let photos = Array.from(req.body.photos);
         var outPhotos = await prepareArray(photos, req.params.id, Photo);
       }
+      product = await Product.findByPk(req.params.id);
       res.send({ updated: product.id, product, outBc, outPhotos });
       return;
     }
@@ -102,6 +126,6 @@ module.exports = async function (req, res) {
     });
   } catch (err) {
     console.log(err);
-    res.send(err);
+    res.status(400).send(err);
   }
 };
