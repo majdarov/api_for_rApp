@@ -8,7 +8,7 @@ import { setNewCode, newBarcode, validateBarcode, validateZeroData, validateRequ
 import FormImg from './FormImg';
 import FormModalWrapper from './FormModalWrapper';
 import noPhoto from '../../../Assets/img/terminal-5.png';
-import Tree from '../../common/Tree/Tree';
+// import Tree from '../../common/Tree/Tree';
 
 const FormProduct = props => {
 
@@ -83,6 +83,7 @@ const FormProduct = props => {
       Object.values(form.elements).forEach(item => {
         if (item.disabled && item.id !== s.uuid) item.removeAttribute('disabled');
       })
+      setState({...state, allow_edit: true});
       form.allow_edit.parentNode.remove();
     } else {
       setState({ ...state, [name]: value });

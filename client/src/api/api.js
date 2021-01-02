@@ -41,3 +41,9 @@ export const productsApi = {
     return await apiProducts.delete(path);
   },
 };
+
+export const apiForIdb = {
+  async getGroupsEvo() {
+    return await apiProducts.get('/groups/update/from_evo');
+  }
+}

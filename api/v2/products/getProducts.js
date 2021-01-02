@@ -52,12 +52,13 @@ module.exports = async function (req, res) {
     res.send(result);
   } else if (req.params.value === 'update') {
     let request = await createRequestAxios({ type: 'products_v2' });
+    // console.log(request)
     let response = await fetchEvoAxios(request); // Get Product from Evotor API
     // console.log(response);
 
     if (req.params.pid === 'from_evo') {
       //Сквозной вывод результата из облака Эвотор
-      res.send(await response.data);
+      res.send(response);
       return;
     }
     let data = response;

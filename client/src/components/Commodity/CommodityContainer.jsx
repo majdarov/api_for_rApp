@@ -1,6 +1,6 @@
 import Commodity from "./Commodity";
-import { setPidAC, getGroups, getProducts, 
-  setViewForm, getProductId, deleteProduct,setFormData, 
+import { setPidAC, getGroups, getProducts,
+  setViewForm, getProductId, deleteProduct,setFormData,
   toggleFormPostAC, postFormData, setFormErrorAC, setErrorAC } from "../../redux/commodityReduser";
 import { connect } from "react-redux";
 import { compose } from "redux";

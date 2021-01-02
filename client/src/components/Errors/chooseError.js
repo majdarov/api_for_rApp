@@ -1,5 +1,5 @@
 import { SequelizeValidationError, SequelizeUniqueConstraintError } from "./SequelizeErrors";
-import { EvoError, EvoValidationError } from "./EvoErrors";
+import { /* EvoError, */ EvoValidationError } from "./EvoErrors";
 
 export const chooseError = (err) => {
     let res = err.response;

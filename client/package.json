@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "formik": "^2.1.5",
+    "idb": "^5.0.8",
     "minimist": "^1.2.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

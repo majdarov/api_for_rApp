@@ -12,6 +12,8 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import CommodityContainer from "./components/Commodity/CommodityContainer";
 import ImpExcel from "./components/ImpExcel/ImpExcel";
 import Wrapper from "./components/Example/Wrapper";
+import IdbTest from "./components/IdbTest/IdbTest";
+import Main from "./components/Main/Main";
 
 const App = () => {
 
@@ -20,12 +22,13 @@ const App = () => {
       <HeaderContainer />
       <NavbarContainer />
       <div className="app-content">
-        <Route exact path="/" />
+        <Route exact path="/" component={Main} />
         <Route path="/example" component={Wrapper} />
         <Route path="/muzik" component={MuzikContainer} />
         <Route path="/commodity" component={CommodityContainer} />
         <Route path="/game" component={Game} />
         <Route path="/table" component={ImpExcel} />
+        <Route path="/test" component={IdbTest} />
       </div>
     </div>
   );

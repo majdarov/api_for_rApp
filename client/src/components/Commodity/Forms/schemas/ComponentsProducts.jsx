@@ -70,7 +70,7 @@ export const ComponentsProducts = {
                 <select name="parent_id" id={props.id}
                     value={props.parent_id} onChange={props.handleChange} disabled={props.disabled}>
                     <option key='0' value='0'>Root</option>
-                    {props.groups.map(g => {
+                    {groups.map(g => {
                         return <option key={g.id} value={g.id}>{g.label}</option>
                     })}
                 </select>

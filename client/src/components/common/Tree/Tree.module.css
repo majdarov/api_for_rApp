@@ -22,14 +22,14 @@
 
 .tree li::before {
   content: "\f105";
-  /* font-family: "Font Awesome 5 Free"; */
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
   margin-right: 0.3rem;
 }
 
 .tree li[class="open"]::before {
   content: "\f107";
-  /* font-family: "Font Awesome 5 Free"; */
+  font-family: "Font Awesome 5 Free";
   font-weight: 900;
 }
 

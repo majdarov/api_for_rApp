@@ -11,6 +11,7 @@ const VIEW_FORM = 'VIEW-FORM';
 const SET_FORM_DATA = 'SET-FORM-DATA';
 const TOGGLE_FORM_POST = 'TOGGLE-FORM-POST';
 const SET_FORM_ERROR = 'SET-FORM-ERROR';
+const SET_APP_KEY = 'SET-APP-KEY';
 
 export const getGroupsAC = (groups) => {
   return { type: GET_GROUPS, groups };
@@ -53,7 +54,12 @@ export const toggleFormPostAC = (formPost) => {
   return { type: TOGGLE_FORM_POST, formPost };
 };
 
+export const setAppKeyAC = key => {
+  return { type: SET_APP_KEY, key };
+}
+
 let initialState = {
+  appKey: null,
   groups: [],
   commodities: [],
   pid: null,
@@ -154,6 +160,9 @@ const commodityReduser = (state = initialState, action) => {
 
     case SET_FORM_DATA:
       return { ...state, form: { ...state.form, formData: action.formData } };
+
+    case SET_APP_KEY:
+      return { ...state, appKey: action.key };
 
     default:
       return state;
@@ -270,5 +279,9 @@ export const deleteProduct = (id, pid) => (dispatch) => {
       dispatch(setErrorAC(chooseError(err)));
     });
 };
+
+export const setAppKey = key => dispatch => {
+  return dispatch(setAppKeyAC(key));
+}
 
 export default commodityReduser;
