@@ -1,5 +1,6 @@
 import * as axios from 'axios';
 import apiConfig from './apiConfig.json';
+import { createRequest, fetchEvo } from './api_evotor';
 
 /* Раскомментировать для сборки for create 'build' */
 // const apiSamurai = axios.create({
@@ -43,7 +44,16 @@ export const productsApi = {
 };
 
 export const apiForIdb = {
+  appKey: localStorage.appKey,
+  storeKey: localStorage.storeKey,
+
   async getGroupsEvo() {
-    return await apiProducts.get('/groups/update/from_evo');
-  }
-}
+    let request = await createRequest({ type: 'groups_v2' }, this.appKey, this.storeKey);
+    return await fetchEvo(request);
+  },
+
+  async getProductsEvo() {
+    let request = await createRequest({ type: 'products_v2' }, this.appKey, this.storeKey);
+    return await fetchEvo(request);
+  },
+};

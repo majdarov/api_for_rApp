@@ -1,36 +1,7 @@
 import React, { useState } from 'react';
 import { apiForIdb } from '../../api/api';
 import Tree from '../common/Tree/Tree';
-import { openDB } from 'idb';
-
-async function initDb() {
-    const db = await openDB('products', 7, {
-        async upgrade(db, oldVersion, newVersion) {
-            if (oldVersion < newVersion) {
-                console.log(`New version: ${newVersion}`);
-            }
-            if (!db.objectStoreNames.contains('groups')) {
-                const store = db.createObjectStore('groups', { keyPath: 'id' });
-                store.createIndex('name', 'name', { unique: true });
-                store.createIndex('date', 'created_at');
-            }
-
-        }
-    });
-
-    return db;
-}
-
-async function getGroup(id) {
-    const db = await initDb();
-    let group;
-    if (id === 'all') {
-        group = await db.getAll('groups');
-    } else {
-        group = await db.get('groups', id);
-    }
-    return group;
-}
+import { getGroup, pushItems } from '../../api/apiIDB';
 
 const IdbTest = () => {
 
@@ -46,8 +17,9 @@ const IdbTest = () => {
     async function butGetGroups() {
         setIsLoading(true);
         let res = await apiForIdb.getGroupsEvo();
-        let g = await res.data.items;
-        let resG = [];
+        console.log(res);
+        let g = await res.items;
+        await pushItems('groups', g);
         /*
          created_at: "2018-08-01T06:00:27.605+0000"
          id: "96639e0c-6409-9faa-d4e0-a8212b9fa795"
@@ -57,24 +29,12 @@ const IdbTest = () => {
          updated_at: "2019-04-13T07:58:19.537+0000"
          user_id: "01-000000000910281"
          */
-        g.forEach((item, idx) => {
-            // if (idx === 1) console.log(item);
-            let group = {
-                ...item,
-                pid: item.parent_id ? item.parent_id : null,
-                label: item.name,
-            };
-            resG.push(group);
-        });
-        /* Init IDB */
-        const db = await initDb();
-        const tx = db.transaction('groups', 'readwrite');
-        const promises = resG.map(item => {
-            return tx.store.put(item);
-        });
-        promises.push(tx.done);
-        await Promise.all(promises);
         let groups = await getGroup('all');
+        groups.forEach((item) => {
+            // if (idx === 1) console.log(item);
+            item.pid = item.parent_id ? item.parent_id : null;
+            item.label = item.name;
+        });
         setGroups(groups);
         setIsLoading(false);
     }
