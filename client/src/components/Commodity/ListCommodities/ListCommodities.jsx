@@ -13,7 +13,7 @@ const ListCommodities = props => {
 
             if (window.confirm(`${elem.innerText}\n\rYou'r realy wanted delete this product?`)) {
                 let res = await props.deleteProduct(elem.id, props.pid);
-                await alert(`Product id: ${res.deleted}\n\rDELETED!`)
+                alert(`Product id: ${res}\n\rDELETED!`)
             } else {
                 alert('NOT DELETED!');
             }

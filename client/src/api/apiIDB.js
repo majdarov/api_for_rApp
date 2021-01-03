@@ -1,4 +1,4 @@
-import { deleteDB, openDB } from "idb";
+import { deleteDB, openDB } from 'idb';
 
 export async function initDb() {
   const db = await openDB('Evo', 1, {
@@ -45,7 +45,6 @@ export async function getProduct(id) {
 }
 
 export async function getProductsPid(pid) {
-  if (pid === 0) pid = '';
   const db = await initDb();
   const products = await db.getAllFromIndex('products', 'parent_id', pid);
   return products;
@@ -74,4 +73,10 @@ export async function putData(storeName, data) {
   const db = await initDb();
   await db.put(storeName, data);
   return data;
+}
+
+export async function deleteData(storeName, id) {
+  const db = await initDb();
+  await db.delete(storeName, id);
+  return id;
 }

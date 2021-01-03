@@ -277,7 +277,7 @@ const FormProduct = props => {
             </div>
             <div>
               {
-                !state.photos.length ?
+                !state.photos?.length ?
                   // <ComponentsProducts.Picture {...pProps} photo='image3D.png' /> :
                   <div><img src={noPhoto} alt="NoPhotos" className={s['picture-small']} /></div> :
                   state.photos.map(ph => {

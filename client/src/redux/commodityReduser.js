@@ -1,5 +1,5 @@
-import { apiForIdb, productsApi } from '../api/api';
-import { getGroup, getProduct, getProductsPid, putData } from '../api/apiIDB';
+import { apiForIdb } from '../api/api';
+import { deleteData, getGroup, getProduct, getProductsPid, putData } from '../api/apiIDB';
 import { chooseError } from '../components/Errors/chooseError';
 
 const GET_GROUPS = 'GET-GROUPS';
@@ -176,8 +176,7 @@ export const getProducts = (pId) => {
 export const getProductId = (id) => {
   if (!id) return (dispatch) => dispatch(viewFormAC(true));
   return (dispatch) => {
-    productsApi
-      .getData(`products/${id}`)
+    getProduct(id)
       .then((res) => {
         dispatch(setFormDataAC(res));
         return true;
@@ -191,7 +190,6 @@ export const getProductId = (id) => {
 export const getGroups = () => {
   return (dispatch) => {
     getGroup('all').then((res) => {
-      // console.log(res)
       let groups = res.map((item) => {
         return {
           ...item,
@@ -206,12 +204,12 @@ export const getGroups = () => {
 
 export const updateProducts = (pId) => {
   return (dispatch) => {
-    productsApi.getData('products/update').then((res) => {
-      dispatch(updateCommodityAC());
-      dispatch(setUpdatedAC(false));
+    // productsApi.getData('products/update').then((res) => {
+    //   dispatch(updateCommodityAC());
+    //   dispatch(setUpdatedAC(false));
       alert(`Updated at ${Date()}`);
       dispatch(setPidAC(pId || 0));
-    });
+    // });
   };
 };
 
@@ -245,22 +243,20 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
       callbackApi = apiForIdb.postData;
       break;
     case 'put':
-      path += `/${body.id}`;
       callbackApi = apiForIdb.putData;
       break;
     default:
       callbackApi = apiForIdb.postData;
       break;
   }
-  // console.log('method: ' + typeQuery);
   callbackApi(path, body)
     .then(res => {
-      putData(`${path}s`, res.data);
-      return res.data;
+      putData(`${path}s`, res);
+      return res;
     })
     .then((res) => {
       console.log(res);
-      return res.product.parent_id;
+      return res.parent_id;
     })
     .then((pid) => {
       dispatch(toggleFormPostAC(false));
@@ -273,19 +269,19 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
       dispatch(setFormErrorAC(chooseError(err)));
       dispatch(toggleFormPostAC(false));
     });
-};
+}
 
-export const deleteProduct = (id, pid) => (dispatch) => {
-  return productsApi
-    .deleteData(`products/${id}`)
-    .then((res) => {
-      dispatch(setPidAC(pid));
-      return res.data;
-    })
-    .catch((err) => {
-      console.dir(err);
-      dispatch(setErrorAC(chooseError(err)));
-    });
-};
+export const deleteProduct = (id, pid) => async (dispatch) => {
+  try {
+    let res = await apiForIdb.deleteData('product', id);
+    console.log(res.status)
+    await deleteData('products', id);
+    dispatch(setPidAC(pid));
+    return id;
+  } catch (err) {
+    console.dir(err);
+    dispatch(setErrorAC(chooseError(err)));
+  }
+}
 
 export default commodityReduser;

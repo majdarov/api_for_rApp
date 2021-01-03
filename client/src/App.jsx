@@ -27,6 +27,11 @@ async function getProductsForIdb() {
 
   res = await apiForIdb.getProductsEvo();
   let products = await res.items;
+  products = products.map(item => {
+    if (!item.parent_id) item.parent_id = '0';
+    if (!item.barcodes) item.barcodes = [];
+    return item;
+  })
   await pushItems('products', products);
 }
 

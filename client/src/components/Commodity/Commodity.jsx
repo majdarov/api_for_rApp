@@ -9,7 +9,7 @@ import FormProduct from "./Forms/FormProduct";
 const Commodity = props => {
 
   if (!props.isLoaded) {
-    props.setPid(0);
+    props.setPid('0');
     props.getGroups();
   }
   if (!props.comIsLoaded) {
