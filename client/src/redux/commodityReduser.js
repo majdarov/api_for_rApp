@@ -1,4 +1,5 @@
-import { productsApi } from '../api/api';
+import { apiForIdb, productsApi } from '../api/api';
+import { getGroup, getProduct, getProductsPid, putData } from '../api/apiIDB';
 import { chooseError } from '../components/Errors/chooseError';
 
 const GET_GROUPS = 'GET-GROUPS';
@@ -54,9 +55,9 @@ export const toggleFormPostAC = (formPost) => {
   return { type: TOGGLE_FORM_POST, formPost };
 };
 
-export const setAppKeyAC = key => {
+export const setAppKeyAC = (key) => {
   return { type: SET_APP_KEY, key };
-}
+};
 
 let initialState = {
   groups: [],
@@ -167,9 +168,8 @@ const commodityReduser = (state = initialState, action) => {
 
 export const getProducts = (pId) => {
   return (dispatch) => {
-    productsApi
-      .getData(`products`, { parent_id: pId })
-      .then((res) => dispatch(getCommoditiesAC(res.items)));
+    getProductsPid(pId)
+      .then((res) => dispatch(getCommoditiesAC(res)));
   };
 };
 
@@ -190,9 +190,17 @@ export const getProductId = (id) => {
 
 export const getGroups = () => {
   return (dispatch) => {
-    productsApi
-      .getData(`groups`)
-      .then((res) => dispatch(getGroupsAC(res.items)));
+    getGroup('all').then((res) => {
+      // console.log(res)
+      let groups = res.map((item) => {
+        return {
+          ...item,
+          pid: item.parent_id ? item.parent_id : null,
+          label: item.name,
+        };
+      });
+      dispatch(getGroupsAC(groups));
+    });
   };
 };
 
@@ -222,33 +230,37 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
   let path;
   switch (typeData) {
     case 'product':
-      path = 'products';
+      path = 'product';
       break;
     case 'group':
-      path = 'groups';
+      path = 'group';
       break;
     default:
-      path = 'products';
+      path = 'product';
       break;
   }
   let callbackApi;
   switch (typeQuery) {
     case 'post':
-      callbackApi = productsApi.postData;
+      callbackApi = apiForIdb.postData;
       break;
     case 'put':
-      path += `/${body.id}`
-      callbackApi = productsApi.putData;
+      path += `/${body.id}`;
+      callbackApi = apiForIdb.putData;
       break;
     default:
-      callbackApi = productsApi.postData;
+      callbackApi = apiForIdb.postData;
       break;
   }
   // console.log('method: ' + typeQuery);
   callbackApi(path, body)
+    .then(res => {
+      putData(`${path}s`, res.data);
+      return res.data;
+    })
     .then((res) => {
-      // console.log(res);
-      return res.data.product.parent_id;
+      console.log(res);
+      return res.product.parent_id;
     })
     .then((pid) => {
       dispatch(toggleFormPostAC(false));

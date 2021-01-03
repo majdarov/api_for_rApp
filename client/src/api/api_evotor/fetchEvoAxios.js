@@ -1,4 +1,3 @@
-import createRequest from './createRequestAxios';
 import { default as Axios } from 'axios';
 
 async function fetchEvo({
@@ -12,7 +11,7 @@ async function fetchEvo({
 }) {
   try {
     let request = { baseURL, url, headers, method, params };
-    console.log(request);
+    // console.log(request);
     if (body) {
       request.data = body;
     }
@@ -24,10 +23,6 @@ async function fetchEvo({
       result = await response.data;
     }
     if (result.paging && result.paging.next_cursor) {
-      // let request = await createRequest({
-      //   type: action,
-      //   cursor: result.paging.next_cursor,
-      // });
       request.params = { cursor: result.paging.next_cursor };
       let response = await fetchEvo(request);
       result.items = result.items.concat(response.items);

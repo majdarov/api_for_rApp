@@ -1,22 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setAppKey, setStoreKey, setStores, initApp } from "../../redux/appReducer";
-import { createRequest, fetchEvo } from '../../api/api_evotor';
+import { apiForIdb } from "../../api/api";
 
 function addKey(id) {
     var key = document.getElementById(id).value;
     if (!key) return;
     window.localStorage[id] = key;
     return key;
-}
-
-async function getStores(appKey) {
-    let request = await createRequest({ type: 'store_v2' }, appKey);
-    // console.log(request);
-    let stores = await fetchEvo(request);
-    console.log(stores);
-    return stores.items;
-
 }
 
 const Main = props => {
@@ -26,7 +17,7 @@ const Main = props => {
         if (!key) return;
         props.setAppKey(key);
         try {
-            let stores = await getStores(key);
+            let stores = await apiForIdb.getStores();
             props.setStores(stores);
         } catch (err) {
             delete localStorage.appKey;

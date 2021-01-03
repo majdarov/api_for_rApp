@@ -1,11 +1,10 @@
 import api_v2 from './api_v2_axios.json';
 
-async function createRequest(action, appKey, storeKey = null) {
-  //Getting config => appToken & storeUUID
+async function createRequest(action) {
 
-  api_v2.headers['X-Authorization'] = appKey; //6ef2370f-ed79-43b7-8a7c-f7b83175fef2
+  api_v2.headers['X-Authorization'] = localStorage.appKey; //6ef2370f-ed79-43b7-8a7c-f7b83175fef2
 
-  action.storeUuid = storeKey;
+  action.storeUuid = localStorage.storeKey;
 
   api_v2.params = action.cursor ? { cursor: action.cursor } : null;
 

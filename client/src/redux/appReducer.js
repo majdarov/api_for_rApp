@@ -1,6 +1,3 @@
-import { apiForIdb } from '../api/api';
-import { pushItems } from '../api/apiIDB';
-
 const SET_APP_KEY = 'SET-APP-KEY';
 const SET_STORE_KEY = 'SET-STORE-KEY';
 const INIT_APP = 'INIT-APP';
@@ -68,16 +65,5 @@ export const initializeApp = () => (dispatch) => {
     }
   }
 };
-
-export async function getProductsForIdb() {
-  // Get groups;
-  let res = await apiForIdb.getGroupsEvo();
-  let groups = await res.items;
-  await pushItems('groups', groups);
-
-  res = await apiForIdb.getProductsEvo();
-  let products = await res.items;
-  await pushItems('products', products);
-}
 
 export default appReducer;

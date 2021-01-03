@@ -14,21 +14,34 @@ import ImpExcel from "./components/ImpExcel/ImpExcel";
 import Wrapper from "./components/Example/Wrapper";
 import IdbTest from "./components/IdbTest/IdbTest";
 import Main from "./components/Main/Main";
-import { initializeApp, initApp, setAppKey, setStoreKey, getProductsForIdb } from './redux/appReducer';
+import { initializeApp, initApp, setAppKey, setStoreKey } from './redux/appReducer';
 import { connect } from "react-redux";
+import { delDb, pushItems } from "./api/apiIDB";
+import { apiForIdb } from "./api/api";
+
+async function getProductsForIdb() {
+  // Get groups;
+  let res = await apiForIdb.getGroupsEvo();
+  let groups = await res.items;
+  await pushItems('groups', groups);
+
+  res = await apiForIdb.getProductsEvo();
+  let products = await res.items;
+  await pushItems('products', products);
+}
 
 const App = props => {
 
   if (!props.isInit) props.initializeApp();
 
   if (props.appKey && props.storeKey && !props.isInit) {
-    // setTimeout(() => props.initApp(true), 3000)
-    getProductsForIdb().then(props.initApp(true));
+    getProductsForIdb().then(res => props.initApp(true));
 
   }
 
-  function cleareStorage() {
+  async function cleareStorage() {
     localStorage.clear();
+    await delDb('Evo');
     props.setAppKey(null);
     props.setStoreKey(null);
     props.initApp(false);
