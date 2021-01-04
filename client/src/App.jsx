@@ -16,7 +16,7 @@ import IdbTest from "./components/IdbTest/IdbTest";
 import Main from "./components/Main/Main";
 import { initializeApp, initApp, setAppKey, setStoreKey } from './redux/appReducer';
 import { connect } from "react-redux";
-import { delDb, pushItems } from "./api/apiIDB";
+import { pushItems } from "./api/apiIDB";
 import { apiForIdb } from "./api/api";
 
 async function getProductsForIdb() {
@@ -44,15 +44,6 @@ const App = props => {
 
   }
 
-  async function cleareStorage() {
-    localStorage.clear();
-    await delDb('Evo');
-    props.setAppKey(null);
-    props.setStoreKey(null);
-    props.initApp(false);
-
-  }
-
   return (
     <div className="app">
       <HeaderContainer />
@@ -66,7 +57,7 @@ const App = props => {
         <Route path="/table" component={ImpExcel} />
         <Route path="/test" component={IdbTest} />
       </div>
-      <button onClick={cleareStorage}>cleare Storage</button>
+
     </div>
   );
 }

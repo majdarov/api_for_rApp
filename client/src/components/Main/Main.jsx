@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { setAppKey, setStoreKey, setStores, initApp } from "../../redux/appReducer";
 import { apiForIdb } from "../../api/api";
+import { readJsonFile, saveConfig } from "../../api/apiFile";
+import { delDb } from "../../api/apiIDB";
 
 function addKey(id) {
     var key = document.getElementById(id).value;
@@ -12,9 +14,16 @@ function addKey(id) {
 
 const Main = props => {
 
-    async function clickAddAppKey() {
-        var key = addKey('appKey');
-        if (!key) return;
+
+    let inpRef = React.createRef();
+
+    async function saveData() {
+        await saveConfig('config');
+        console.log('File with data saved');
+    }
+
+    async function setAppKeyAndStores(key) {
+        localStorage.appKey = key;
         props.setAppKey(key);
         try {
             let stores = await apiForIdb.getStores();
@@ -24,7 +33,12 @@ const Main = props => {
             props.setAppKey(null);
             console.error(err);
         }
+    }
 
+    async function clickAddAppKey() {
+        var key = addKey('appKey');
+        if (!key) return;
+        await setAppKeyAndStores(key);
     }
 
     function liClick(e) {
@@ -32,6 +46,23 @@ const Main = props => {
         localStorage.storeKey = storeKey;
         props.setStoreKey(storeKey);
         // props.initApp(true);
+    }
+
+    async function cleareStorage(storageName) {
+        localStorage.clear();
+        await delDb(storageName);
+        props.setAppKey(null);
+        props.setStoreKey(null);
+        props.initApp(false);
+
+    }
+
+    async function restoreConfig() {
+        let file = inpRef.current;
+        let config = await readJsonFile(file);
+        await setAppKeyAndStores(config.appKey);
+        localStorage.storeKey = config.storeKey;
+        props.setStoreKey(config.storeKey);
     }
 
     return (
@@ -57,7 +88,19 @@ const Main = props => {
                 </div>
             }
             { !!props.storeKey && !props.isInit && <p>{props.storeKey}</p>}
-            { props.isInit && <h2>App Is Initialized</h2> }
+            { props.isInit && <h2>App Is Initialized</h2>}
+            { props.isInit &&
+                <div>
+                    <button onClick={() => cleareStorage('Evo')}>cleare Storage</button>
+                    <button onClick={saveData}>Save Config</button>
+                </div>
+            }
+            {
+                !props.isInit &&
+                <label>Restore config
+                    <input type="file" ref={inpRef} onChange={restoreConfig} hidden />
+                </label>
+            }
         </div>
     );
 }

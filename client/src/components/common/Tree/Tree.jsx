@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import s from "./Tree.module.css";
 import createTree from "./treeFunction";
 import Node from "./Node";
@@ -7,6 +7,23 @@ const Tree = props => {
   let nodeRoot = { id: 0, label: props.price, childs: [] };
   let tree = { id: "Tree", label: props.treeLabel, childs: [nodeRoot] };
   createTree(props.data, tree);
+
+  useEffect(() => {
+    if (props.pId) {
+      document
+        .getElementById("Tree")
+        .querySelectorAll("span")
+        .forEach(item => {
+          if (item.className === s.selected) item.className = null;
+        });
+      let nodeSelected = document.getElementById(props.pId);
+      nodeSelected.querySelector("span").className = s.selected;
+      let ul = nodeSelected.closest('ul');
+      if (ul.hidden) {
+        ul.hidden = false;
+      }
+    }
+  }, [props.pId])
 
   function handleClick(e) {
     if (e.target.tagName !== "SPAN" && e.target.tagName !== "I") return;
@@ -42,6 +59,7 @@ const Tree = props => {
     if (props.callback) {
       props.callback(elem.id);
     }
+
   }
 
   function createSubTree(item, lvl = 0) {

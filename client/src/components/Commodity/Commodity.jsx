@@ -97,7 +97,7 @@ const Commodity = props => {
           />
           : null}
         <div className={s.container}>
-            <Tree data={props.groups} price="Price" treeLabel="Groups" /* handleClick={handleClick} */ callback={changePid} />
+          <Tree data={props.groups} price="Price" treeLabel="Groups" /* handleClick={handleClick} */ callback={changePid} pId={props.pid}/>
           <div className={s.list}>
             <h3>Commodities</h3>
             <ListCommodities
